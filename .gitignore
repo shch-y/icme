@@ -1,0 +1,19 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# only include the manifest.jsonl file in runs/opens2v_1024/inputs/
+runs/**
+!/runs/
+!/runs/opens2v_1024/
+!/runs/opens2v_1024/inputs/
+!runs/opens2v_1024/inputs/manifest.jsonl
+
+xpq/

@@ -1,0 +1,18 @@
+[submodule "VBench"]
+	path = VBench
+	url = git@github.com:guzlq/VBench.git
+[submodule "smoothquant"]
+	path = smoothquant
+	url = https://github.com/mit-han-lab/smoothquant.git
+[submodule "RoMeo"]
+	path = RoMeo
+	url = https://github.com/thu-pacman/RoMeo.git
+[submodule "HiFloat4"]
+	path = HiFloat4
+	url = https://github.com/global-computing-consortium/HiFloat4.git
+[submodule "wenshentu"]
+	path = wenshentu
+	url = https://github.com/Qcompiler/AccText2Img.git
+[submodule "Wan2.2"]
+	path = Wan2.2
+	url = git@github.com:shch-y/Wan2.2.git

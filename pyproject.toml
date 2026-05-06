@@ -1,0 +1,113 @@
+[project]
+name = "icme-quant"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12, <3.13"
+dependencies = [
+    "diffusers",
+    "blobfile",
+    "einops==0.8.1",
+    "faker",
+    "fire",
+    "ftfy==6.3.1",
+    "imageio==2.37.2",
+    "imageio-ffmpeg==0.6.0",
+    "msgpack",
+    "numpy==2.4.0",
+    "plum-dispatch",
+    "prometheus-client>=0.19.0",
+    "psutil==7.1.3",
+    "pyzmq>=27.0.0",
+    "regex==2025.11.3",
+    "safetensors==0.7.0",
+    "scipy==1.16.3",
+    "tiktoken>=0.7.0",
+    "torch==2.6.0",
+    "torchvision",
+    "tqdm==4.67.1",
+    "transformers[torch]>=4.49.0,<4.57.0",
+    "typing-extensions",
+    "uvicorn[standard]",
+    "netifaces",
+    "pandas",
+    "opencv-python>=4.13.0.92",
+    "setuptools==69.5.1",
+    "vbench",
+    "wan",
+    "flash_attn",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+
+[[tool.uv.index]]
+name = "pytorch-cu124"
+url = "https://download.pytorch.org/whl/cu124"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cu126"
+url = "https://download.pytorch.org/whl/cu126"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
+
+
+[[tool.uv.index]]
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+default = true
+
+[tool.uv.sources]
+# Switch to your cuda version
+torch = { index = "pytorch-cu124" }
+torchvision = { index = "pytorch-cu124" }
+vbench = { workspace = true }
+wan = { workspace = true }
+
+
+[tool.uv.extra-build-dependencies]
+flash_attn = ["torch==2.6.0"]
+
+[tool.uv.extra-build-variables]
+flash_attn     = { FLASH_ATTENTION_FORCE_BUILD = "TRUE", MAX_JOBS="16", FLASH_ATTN_CUDA_ARCHS = "90" }
+
+[tool.uv]
+config-settings = { editable_mode = "compat" }
+# no-build-isolation-package = ["sageattention", "spas_sage_attn"]
+# reinstall-package = ["spas_sage_attn"]
+# [dependency-groups]
+# dev = [
+#     "torch==2.6.0",
+#     "flash_attn",
+# ]
+
+[tool.setuptools]
+packages = []
+
+[project.optional-dependencies]
+eval = [
+    "lpips==0.1.4",
+    "pytorch-fid==0.3.0",
+    "scikit-image==0.25.2",
+    "torch-fidelity==0.4.0",
+    "torchmetrics==1.9.0",
+]
+
+[tool.uv.workspace]
+members = [
+    "VBench",
+    "Wan2.2",
+]
+
