@@ -3,9 +3,9 @@ type=fp4ffn0
 set -ex
 
 rm -rf runs/opens2v_1024/generated${type}/*
-srun -N 1 --gres=gpu:H100:1 -p Long --pty /home/chenyidong/anaconda3/envs/icme/bin/python \
+srun -N 1 --gres=gpu:H100:1 -p Long --pty python \
   opens2v_vbench_wan22_i2v/generate_wan22_official.py  \
-      --manifest runs/opens2v_1024/inputs/manifest.jsonl  \
+      --manifest runs/opens2v_1024/inputs/manifest1.jsonl  \
             --out_dir runs/opens2v_1024/generated${type}   --ckpt_dir /home/dataset/Wan2.2-I2V-A14B    \
                   --wan_repo /home/chenyidong/train/Wan2.2   --task i2v-A14B      \
                         --max_prompts 1 \

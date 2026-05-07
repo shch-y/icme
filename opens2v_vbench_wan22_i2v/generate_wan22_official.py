@@ -452,6 +452,26 @@ def main() -> None:
                     n += 1
             return n
 
+        def _install_precision_aware_proj(mod) -> int:
+            n = 0
+            for bi, blk in enumerate(getattr(mod, "blocks", [])):
+                if bi < args.hifx4_skip_first_n_blocks:
+                    continue
+                
+                attn_block : torch.nn.Module = blk.self_attn
+                for name, child in attn_block.named_children():
+                    if name in ("q", "k", "v", "o") and isinstance(child, torch.nn.Linear):
+                        setattr(attn_block, name, PrecisionAwareFFNLinear(
+                            child,
+                            warmup_steps=3,
+                            threshold=6.0,
+                            use_smoothquant=args.ffn_smoothquant,
+                            smoothquant_alpha=args.ffn_smoothquant_alpha,
+                        ))
+                        n += 1
+
+            return n
+
         if args.use_precision_aware_ffn0:
             n_low = _install_precision_aware_ffn(pipeline.low_noise_model, 0)
             n_high = _install_precision_aware_ffn(pipeline.high_noise_model, 0)
@@ -461,6 +481,13 @@ def main() -> None:
             n_low2 = _install_precision_aware_ffn(pipeline.low_noise_model, 2)
             n_high2 = _install_precision_aware_ffn(pipeline.high_noise_model, 2)
             logging.info(f"Installed PrecisionAwareFFNLinear for ffn[2]: low_noise={n_low2}, high_noise={n_high2}.")
+
+        use_precision_aware_proj = False
+        if use_precision_aware_proj:
+            n_proj_low = _install_precision_aware_proj(pipeline.low_noise_model)
+            n_proj_high = _install_precision_aware_proj(pipeline.high_noise_model)
+            logging.info(f"Installed PrecisionAwareFFNLinear for attention projections: low_noise={n_proj_low}, high_noise={n_proj_high}.")
+
 
         def _replace_selected_linear_only(mod) -> None:
             """

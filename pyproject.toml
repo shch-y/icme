@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12, <3.13"
 dependencies = [
+    "torch",
     "diffusers",
     "blobfile",
     "einops==0.8.1",
@@ -23,7 +24,6 @@ dependencies = [
     "safetensors==0.7.0",
     "scipy==1.16.3",
     "tiktoken>=0.7.0",
-    "torch==2.6.0",
     "torchvision",
     "tqdm==4.67.1",
     "transformers[torch]>=4.49.0,<4.57.0",
@@ -33,10 +33,11 @@ dependencies = [
     "pandas",
     "opencv-python>=4.13.0.92",
     "setuptools==69.5.1",
+    "torch==2.11.0",
     "vbench",
     "wan",
-    "flash_attn",
 ]
+#    "flash_attn",
 
 [build-system]
 requires = ["setuptools>=61.0"]
@@ -49,21 +50,9 @@ url = "https://download.pytorch.org/whl/cu124"
 explicit = true
 
 [[tool.uv.index]]
-name = "pytorch-cu126"
-url = "https://download.pytorch.org/whl/cu126"
-explicit = true
-
-[[tool.uv.index]]
 name = "pytorch-cu128"
 url = "https://download.pytorch.org/whl/cu128"
 explicit = true
-
-
-[[tool.uv.index]]
-name = "pytorch-cu130"
-url = "https://download.pytorch.org/whl/cu130"
-explicit = true
-
 
 [[tool.uv.index]]
 url = "https://pypi.tuna.tsinghua.edu.cn/simple"
@@ -71,27 +60,19 @@ default = true
 
 [tool.uv.sources]
 # Switch to your cuda version
-torch = { index = "pytorch-cu124" }
-torchvision = { index = "pytorch-cu124" }
+torch = { index = "pytorch-cu128" }
+torchvision = { index = "pytorch-cu128" }
 vbench = { workspace = true }
 wan = { workspace = true }
 
-
 [tool.uv.extra-build-dependencies]
-flash_attn = ["torch==2.6.0"]
+flash-attn = ["torch==2.11.0"]
 
 [tool.uv.extra-build-variables]
-flash_attn     = { FLASH_ATTENTION_FORCE_BUILD = "TRUE", MAX_JOBS="16", FLASH_ATTN_CUDA_ARCHS = "90" }
+flash-attn  = { MAX_JOBS="16", FLASH_ATTN_CUDA_ARCHS = "89;90;120"}
 
 [tool.uv]
 config-settings = { editable_mode = "compat" }
-# no-build-isolation-package = ["sageattention", "spas_sage_attn"]
-# reinstall-package = ["spas_sage_attn"]
-# [dependency-groups]
-# dev = [
-#     "torch==2.6.0",
-#     "flash_attn",
-# ]
 
 [tool.setuptools]
 packages = []

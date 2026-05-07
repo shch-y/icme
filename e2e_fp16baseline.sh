@@ -4,11 +4,11 @@
 
 set -ex
 
-type=fp4ffn02sq
+type=fp16
 
 
-rm -rf "runs/opens2v_1024/generated${type:?}"/*
-srun -N 1 --gres=gpu:a100:1 -p a100 --pty python \
+# rm -rf "runs/opens2v_1024/generated${type:?}"/*
+srun -N 1 --gres=gpu:H100:1 -c 16 --pty python \
   opens2v_vbench_wan22_i2v/generate_wan22_official.py \
   --manifest runs/opens2v_1024/inputs/manifest1.jsonl \
   --out_dir "runs/opens2v_1024/generated${type}" \
@@ -18,13 +18,9 @@ srun -N 1 --gres=gpu:a100:1 -p a100 --pty python \
   --max_prompts 1 \
   --num_videos_per_prompt 1 \
   --height 480 --width 832 \
-  --frame_num 81 \
-  --base_seed 1234 \
-  --use_hifx4 \
-  --use_precision_aware_ffn0 \
-  --use_precision_aware_ffn2 \
-  --ffn_smoothquant \
-  --ffn_smoothquant_alpha 0.85
+  --frame_num 77 \
+  --base_seed 1234 
+
 
 rm -rf "runs/opens2v_1024/vbench_out${type}"/*
 python VBench/evaluate_i2v.py \
@@ -32,7 +28,7 @@ python VBench/evaluate_i2v.py \
   --custom_image_folder "runs/opens2v_1024/generated${type}/images" \
   --mode custom_input \
   --ratio 16-9 \
-  --dimension i2v_subject \
+  --dimension imaging_quality aesthetic_quality subject_consistency motion_smoothness  \
   --output_path "runs/opens2v_1024/vbench_out${type}"
 python opens2v_vbench_wan22_i2v/summarize_vbench.py \
   --eval_json "runs/opens2v_1024/vbench_out${type}/*_eval_results.json"

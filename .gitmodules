@@ -1,6 +1,6 @@
 [submodule "VBench"]
 	path = VBench
-	url = git@github.com:guzlq/VBench.git
+	url = git@github.com:shch-y/VBench.git
 [submodule "smoothquant"]
 	path = smoothquant
 	url = https://github.com/mit-han-lab/smoothquant.git
